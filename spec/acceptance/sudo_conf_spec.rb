@@ -51,11 +51,11 @@ describe 'sudo::conf class' do
   end
 
   context 'with ignore and suffix specified' do
-    describe command("touch /etc/sudoers.d/file-from-rpm") do
+    describe command('touch /etc/sudoers.d/file-from-rpm') do
       its(:exit_status) { is_expected.to eq 0 }
     end
 
-    it 'create a puppet managed file' do
+    describe 'create a puppet managed file' do
       pp = <<-PP
       class {'sudo':
         suffix => '_puppet',
@@ -67,13 +67,15 @@ describe 'sudo::conf class' do
       PP
 
       # Run it twice and test for idempotency
-      apply_manifest(pp, :catch_failures => true)
-      expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+      it 'runs with out errors' do
+        apply_manifest(pp, :catch_failures => true)
+        expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+      end
       describe file('/etc/sudoers.d/janedoe_nopasswd_puppet') do
-        it { should exist }
+        it { is_expected.to exist }
       end
       describe file('/etc/sudoers.d/sudoers.d/file-from-rpm') do
-        it { should exist }
+        it { is_expected.to exist }
       end
       pp = <<-PP
       class {'sudo':
@@ -82,13 +84,15 @@ describe 'sudo::conf class' do
       }
       PP
       # Run it twice and test for idempotency
-      apply_manifest(pp, :catch_failures => true)
-      expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
+      it 'runs with no changes' do
+        apply_manifest(pp, :catch_failures => true)
+        expect(apply_manifest(pp, :catch_changes => true).exit_code).to be_zero
+      end
       describe file('/etc/sudoers.d/janedoe_nopasswd_puppet') do
-        it { should_not exist }
+        it { is_expected.not_to exist }
       end
       describe file('/etc/sudoers.d/sudoers.d/file-from-rpm') do
-        it { should exist }
+        it { is_expected.to exist }
       end
     end
   end
