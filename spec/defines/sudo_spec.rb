@@ -215,7 +215,7 @@ describe 'sudo::conf', :type => :define do
         ensure:          'absent',
         priority:        10,
         content:         '%admins ALL=(ALL) NOPASSWD: ALL',
-        sudo_config_dir: '/etc/sudoers.d',
+        sudo_config_dir: '/etc/sudoers.d'
       }
     end
 
@@ -241,17 +241,17 @@ describe 'sudo::conf', :type => :define do
         ensure:          'absent',
         priority:        10,
         content:         '%admins ALL=(ALL) NOPASSWD: ALL',
-        sudo_config_dir: '/etc/sudoers.d',
+        sudo_config_dir: '/etc/sudoers.d'
       }
     end
 
     it do
-      is_expected.to contain_file("#{filename}").with(
+      is_expected.to contain_file(filename.to_s).with(
         ensure:  'absent',
         content: "# This file is managed by Puppet; changes may be overwritten\n%admins ALL=(ALL) NOPASSWD: ALL\n",
         owner:   'root',
         group:   'root',
-        path:    "/etc/sudoers.d/alpha_10_admins",
+        path:    '/etc/sudoers.d/alpha_10_admins',
         mode:    '0440'
       )
     end
@@ -267,7 +267,7 @@ describe 'sudo::conf', :type => :define do
         ensure:          'absent',
         priority:        10,
         content:         '%admins ALL=(ALL) NOPASSWD: ALL',
-        sudo_config_dir: '/etc/sudoers.d',
+        sudo_config_dir: '/etc/sudoers.d'
       }
     end
 
@@ -277,10 +277,9 @@ describe 'sudo::conf', :type => :define do
         content: "# This file is managed by Puppet; changes may be overwritten\n%admins ALL=(ALL) NOPASSWD: ALL\n",
         owner:   'root',
         group:   'root',
-        path:    "/etc/sudoers.d/alpha_10_admins_beta",
+        path:    '/etc/sudoers.d/alpha_10_admins_beta',
         mode:    '0440'
       )
     end
   end
-
 end
